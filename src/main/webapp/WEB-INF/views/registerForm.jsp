@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.net.URLDecoder" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -69,19 +70,19 @@
   <title>Register</title>
 </head>
 <body>
-<form action="<c:url value='/register/add'/>" method="post">
+<form action="<c:url value='/register/add'/>" method="post" onsubmit="return formCheck(this)">
   <div class="title">Register</div>
-  <div id="msg" class="msg"> </div>
+  <div id="msg" class="msg">${URLDecoder.decode(param.msg, "utf-8")}</div>
   <label for="">아이디</label>
-  <input class="input-field" type="text" name="id" placeholder="8~12자리의 영대소문자와 숫자 조합">
+  <input class="input-field" type="text" name="id" placeholder="8~12자리의 영대소문자와 숫자 조합" autofocus>
   <label for="">비밀번호</label>
   <input class="input-field" type="text" name="pwd" placeholder="8~12자리의 영대소문자와 숫자 조합">
   <label for="">이름</label>
-  <input class="input-field" type="text" name="name" placeholder="홍길동">
+  <input class="input-field" type="text" name="name" placeholder="서현우">
   <label for="">이메일</label>
-  <input class="input-field" type="text" name="email" placeholder="example@fastcampus.co.kr">
+  <input class="input-field" type="text" name="email" placeholder="busantour@busantour.com">
   <label for="">생일</label>
-  <input class="input-field" type="text" name="birth" placeholder="2020/12/31">
+  <input class="input-field" type="text" name="birth" placeholder="2022/07/15">
   <div class="sns-chk">
     <label><input type="checkbox" name="sns" value="facebook"/>페이스북</label>
     <label><input type="checkbox" name="sns" value="kakaotalk"/>카카오톡</label>
@@ -102,7 +103,7 @@
   }
 
   function setMessage(msg, element){
-    document.getElementById("msg").innerHTML = `<i class="fa fa-exclamation-circle"> ${msg}</i>`;
+    document.getElementById("msg").innerHTML = `<i class="fa fa-exclamation-circle"> ${'${msg}'}</i>`;
 
     if(element) {
       element.select();
