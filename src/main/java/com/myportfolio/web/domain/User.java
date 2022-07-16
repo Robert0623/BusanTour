@@ -1,11 +1,15 @@
 package com.myportfolio.web.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
 public class User {
     private String id;
     private String pwd;
     private String name;
     private String email;
-    private String birth;
+    private Date birth;
     private String sns;
 
     public String getId() {
@@ -40,11 +44,11 @@ public class User {
         this.email = email;
     }
 
-    public String getBirth() {
+    public Date getBirth() {
         return birth;
     }
 
-    public void setBirth(String birth) {
+    public void setBirth(Date birth) {
         this.birth = birth;
     }
 
