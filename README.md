@@ -30,3 +30,6 @@
 - RecruitBoardService, RecruitBoardServiceImpl - DAO를 보고 작성
 - RecruitBoardController - getPage와 페이지 정보를 Model에 저장해서 뷰로 보내도록 작성
 - recruitBoardList.jsp - getPage 정보를 받아서 반복문으로 보여주고, 페이지 정보를 받아서 반복문으로 보여주게 작성
+### 게시글 상세페이지 조회, 삭제, 생성, 수정기능 추가
+- RecruitBoardController, recruitBoard.jsp, recruitBoardList.jsp
+: CRUD 기능 구현 

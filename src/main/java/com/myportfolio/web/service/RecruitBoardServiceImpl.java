@@ -20,6 +20,7 @@ public class RecruitBoardServiceImpl implements RecruitBoardService {
     @Override
     public int write(RecruitBoardDto recruitBoardDto) throws Exception {
         return recruitBoardDao.insert(recruitBoardDto);
+//        throw new Exception("test");
     }
     @Override
     public RecruitBoardDto read(Integer bno) throws Exception {
