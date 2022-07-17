@@ -1,6 +1,7 @@
 package com.myportfolio.web.dao;
 
 import com.myportfolio.web.domain.RecruitBoardDto;
+import com.myportfolio.web.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -58,5 +59,13 @@ public class RecruitBoardDaoImpl implements RecruitBoardDao {
     @Override
     public int updateCommentCnt(Map map) throws Exception {
         return session.update(namespace + "updateCommentCnt", map);
+    }
+    @Override
+    public List<RecruitBoardDto> searchSelectPage(SearchCondition sc) throws Exception {
+        return session.selectList(namespace + "searchSelectPage", sc);
+    }
+    @Override
+    public int searchResultCnt(SearchCondition sc) throws Exception {
+        return session.selectOne(namespace + "searchResultCnt", sc);
     }
 }

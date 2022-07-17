@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import com.myportfolio.web.domain.PageHandler;
 import com.myportfolio.web.domain.RecruitBoardDto;
+import com.myportfolio.web.domain.SearchCondition;
 import com.myportfolio.web.service.RecruitBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,18 +31,21 @@ public class RecruitBoardController {
         recruitBoardDto.setWriter(writer);
 
         try {
-            rattr.addAttribute("page", page);
-            rattr.addAttribute("pageSize", pageSize);
             int rowCnt = recruitBoardService.modify(recruitBoardDto);
 
             if(rowCnt!=1)
                 throw new Exception("Modify Failed");
 
+            rattr.addAttribute("page", page);
+            rattr.addAttribute("pageSize", pageSize);
             rattr.addFlashAttribute("msg", "MOD_OK");
+
             return "redirect:/recruit/list";
         } catch (Exception e) {
             e.printStackTrace();
             m.addAttribute(recruitBoardDto);
+            m.addAttribute("page", page);
+            m.addAttribute("pageSize", pageSize);
             m.addAttribute("msg", "MOD_ERR");
             return "recruitBoard";
         }
@@ -107,26 +111,21 @@ public class RecruitBoardController {
     }
 
     @GetMapping("/list")
-    public String list(Integer page, Integer pageSize, Model m, HttpServletRequest request) {
+    public String list(SearchCondition sc, Model m, HttpServletRequest request) {
         if(!loginCheck(request))
             return "redirect:/login/login?toURL="+request.getRequestURL();  // 로그인을 안했으면 로그인 화면으로 이동
 
-        if(page==null) page = 1;
-        if(pageSize==null) pageSize = 10;
         try {
 
-            int totalCnt = recruitBoardService.getCount();
-            PageHandler pageHandler = new PageHandler(totalCnt, page, pageSize);
+            int totalCnt = recruitBoardService.getSearchResultCnt(sc);
+            m.addAttribute("totalCnt", totalCnt);
+            PageHandler pageHandler = new PageHandler(totalCnt, sc);
 
-            Map map = new HashMap();
-            map.put("offset", (page-1)*pageSize);
-            map.put("pageSize", pageSize);
+            List<RecruitBoardDto> list = recruitBoardService.getSearchResultPage(sc);
 
-            List<RecruitBoardDto> list = recruitBoardService.getPage(map);
             m.addAttribute("list", list);
             m.addAttribute("ph", pageHandler);
-            m.addAttribute("page", page);
-            m.addAttribute("pageSize", pageSize);
+
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package com.myportfolio.web.service;
 
 import com.myportfolio.web.dao.RecruitBoardDao;
 import com.myportfolio.web.domain.RecruitBoardDto;
+import com.myportfolio.web.domain.SearchCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,14 @@ public class RecruitBoardServiceImpl implements RecruitBoardService {
     @Override
     public List<RecruitBoardDto> getPage(Map map) throws Exception {
         return recruitBoardDao.selectPage(map);
+    }
+    @Override
+    public List<RecruitBoardDto> getSearchResultPage(SearchCondition sc) throws Exception {
+        return recruitBoardDao.searchSelectPage(sc);
+    }
+    @Override
+    public int getSearchResultCnt(SearchCondition sc) throws Exception {
+        return recruitBoardDao.searchResultCnt(sc);
     }
 
 }

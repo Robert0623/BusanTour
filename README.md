@@ -33,3 +33,5 @@
 ### 게시글 상세페이지 조회, 삭제, 생성, 수정기능 추가
 - RecruitBoardController, recruitBoard.jsp, recruitBoardList.jsp
 : CRUD 기능 구현 
+### 검색 기능 추가, css 수정
+- SearchCondition 추가 및 mapper.xml, PageHandler, DAO, Service, Controller 추가 및 수정

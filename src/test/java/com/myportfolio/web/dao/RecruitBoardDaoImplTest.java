@@ -1,6 +1,7 @@
 package com.myportfolio.web.dao;
 
 import com.myportfolio.web.domain.RecruitBoardDto;
+import com.myportfolio.web.domain.SearchCondition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,44 @@ import static org.junit.Assert.*;
 public class RecruitBoardDaoImplTest {
     @Autowired
     RecruitBoardDao boardDao;
+
+    @Test
+    public void searchSelectPageTest() throws Exception {
+        boardDao.deleteAll();
+        for (int i = 1; i <= 20; i++) {
+            RecruitBoardDto boardDto = new RecruitBoardDto("title"+i, "no content", "asdf"+i);
+            boardDao.insert(boardDto);
+        }
+
+        SearchCondition sc = new SearchCondition(1, 10, "title2", "T");
+        List<RecruitBoardDto> list = boardDao.searchSelectPage(sc);
+        System.out.println("list = " + list);
+        assertTrue(list.size()==2); //title2, title20
+
+        sc = new SearchCondition(1, 10, "asdf2", "W");
+        list = boardDao.searchSelectPage(sc);
+        System.out.println("list = " + list);
+        assertTrue(list.size()==2); //asdf2, asdf20
+    }
+
+    @Test
+    public void searchResultCntTest() throws Exception {
+        boardDao.deleteAll();
+        for (int i = 1; i <= 20; i++) {
+            RecruitBoardDto boardDto = new RecruitBoardDto("title"+i, "no content", "asdf"+i);
+            boardDao.insert(boardDto);
+        }
+
+        SearchCondition sc = new SearchCondition(1, 10, "title2", "T");
+        int cnt = boardDao.searchResultCnt(sc);
+        System.out.println("cnt = " + cnt);
+        assertTrue(cnt==2); //title2, title20
+
+        sc = new SearchCondition(1, 10, "asdf2", "W");
+        cnt = boardDao.searchResultCnt(sc);
+        System.out.println("cnt = " + cnt);
+        assertTrue(cnt==2); //asdf2, asdf20
+    }
 
     @Test
     public void insertTestData() throws Exception {

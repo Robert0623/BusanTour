@@ -1,6 +1,7 @@
 package com.myportfolio.web.dao;
 
 import com.myportfolio.web.domain.RecruitBoardDto;
+import com.myportfolio.web.domain.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -25,4 +26,9 @@ public interface RecruitBoardDao {
     int increaseViewCnt(Integer bno) throws Exception;
 
     int updateCommentCnt(Map map) throws Exception;
-}
+
+    List<RecruitBoardDto> searchSelectPage(SearchCondition sc) throws Exception;
+
+    int searchResultCnt(SearchCondition sc) throws Exception;
+
+    }

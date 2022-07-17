@@ -1,6 +1,7 @@
 package com.myportfolio.web.service;
 
 import com.myportfolio.web.domain.RecruitBoardDto;
+import com.myportfolio.web.domain.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,8 @@ public interface RecruitBoardService {
     int removeAll() throws Exception;
 
     List<RecruitBoardDto> getPage(Map map) throws Exception;
+
+    List<RecruitBoardDto> getSearchResultPage(SearchCondition sc) throws Exception;
+
+    int getSearchResultCnt(SearchCondition sc) throws Exception;
 }
