@@ -31,16 +31,23 @@
         <include refid="selectFromRecruitBoard"/>
         ORDER BY reg_date DESC, bno DESC
     </select>
+
+    <!-- 관리자용 -->
+    <delete id="deleteForAdmin" parameterType="int">
+        DELETE FROM recruit_board
+        WHERE bno = #{bno}
+    </delete>
+
     <delete id="deleteAll">
         DELETE FROM recruit_board
     </delete>
-    <select id="selectPage" parameterType="map">
+    <select id="selectPage" parameterType="map" resultType="RecruitBoardDto">
         <include refid="selectFromRecruitBoard"/>
         ORDER BY reg_date DESC, bno DESC
         LIMIT #{offset}, #{pageSize}
     </select>
     <update id="increaseViewCnt" parameterType="int">
-        UPDATE recurit_board
+        UPDATE recruit_board
         SET view_cnt = view_cnt + 1
         WHERE bno = #{bno}
     </update>

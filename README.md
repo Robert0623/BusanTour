@@ -26,3 +26,7 @@
 ### Paging 
 - PageHandler - domain에 추가
 - PageHandlerTest - PageHandler 테스트 - beginPage, endPage, showPrev, showNext
+### Service, Controller 추가, List만들기, Paging 처리
+- RecruitBoardService, RecruitBoardServiceImpl - DAO를 보고 작성
+- RecruitBoardController - getPage와 페이지 정보를 Model에 저장해서 뷰로 보내도록 작성
+- recruitBoardList.jsp - getPage 정보를 받아서 반복문으로 보여주고, 페이지 정보를 받아서 반복문으로 보여주게 작성

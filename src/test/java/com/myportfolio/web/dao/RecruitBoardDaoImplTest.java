@@ -7,55 +7,201 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class RecruitBoardDaoImplTest {
     @Autowired
-    RecruitBoardDao recruitBoardDao;
+    RecruitBoardDao boardDao;
 
     @Test
-    public void count() {
+    public void insertTestData() throws Exception {
+        boardDao.deleteAll();
+        for (int i = 1; i <= 220; i++) {
+            RecruitBoardDto boardDto = new RecruitBoardDto("title" + i, "no content", "asdf");
+            boardDao.insert(boardDto);
+        }
     }
 
     @Test
-    public void insert() {
+    public void countTest() throws Exception {
+        boardDao.deleteAll();
+        assertTrue(boardDao.count()==0);
+
+        RecruitBoardDto boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+        assertTrue(boardDao.count()==1);
+
+        assertTrue(boardDao.insert(boardDto)==1);
+        assertTrue(boardDao.count()==2);
     }
 
     @Test
-    public void select() throws Exception {
-        assertTrue(recruitBoardDao!=null);
-        System.out.println("recruitBoardDao = " + recruitBoardDao);
-        RecruitBoardDto recruitBoardDto = recruitBoardDao.select(1);
-        assertTrue(recruitBoardDto.getBno().equals(1));
+    public void deleteAllTest() throws Exception {
+        boardDao.deleteAll();
+        assertTrue(boardDao.count()==0);
+
+        RecruitBoardDto boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+        assertTrue(boardDao.deleteAll()==1);
+        assertTrue(boardDao.count()==0);
+
+        boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+        assertTrue(boardDao.insert(boardDto)==1);
+        assertTrue(boardDao.deleteAll()==2);
+        assertTrue(boardDao.count()==0);
     }
 
     @Test
-    public void update() {
+    public void deleteTest() throws Exception {
+        boardDao.deleteAll();
+        assertTrue(boardDao.count()==0);
+
+        RecruitBoardDto boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+        Integer bno = boardDao.selectAll().get(0).getBno();
+        assertTrue(boardDao.delete(bno, boardDto.getWriter())==1);
+        assertTrue(boardDao.count()==0);
+
+        assertTrue(boardDao.insert(boardDto)==1);
+        bno = boardDao.selectAll().get(0).getBno();
+        assertTrue(boardDao.delete(bno, boardDto.getWriter()+"222")==0);
+        assertTrue(boardDao.count()==1);
+
+        assertTrue(boardDao.delete(bno, boardDto.getWriter())==1);
+        assertTrue(boardDao.count()==0);
+
+        assertTrue(boardDao.insert(boardDto)==1);
+        bno = boardDao.selectAll().get(0).getBno();
+        assertTrue(boardDao.delete(bno+1, boardDto.getWriter())==0);
+        assertTrue(boardDao.count()==1);
     }
 
     @Test
-    public void delete() {
+    public void insertTest() throws Exception {
+        boardDao.deleteAll();
+        RecruitBoardDto boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+
+        boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+        assertTrue(boardDao.count()==2);
+
+        boardDao.deleteAll();
+        boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+        assertTrue(boardDao.count()==1);
     }
 
     @Test
-    public void selectAll() {
+    public void selectAllTest() throws Exception {
+        boardDao.deleteAll();
+        assertTrue(boardDao.count()==0);
+
+        List<RecruitBoardDto> list = boardDao.selectAll();
+        assertTrue(list.size() == 0);
+
+        RecruitBoardDto boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+
+        list = boardDao.selectAll();
+        assertTrue(list.size() == 1);
+
+        assertTrue(boardDao.insert(boardDto)==1);
+        list = boardDao.selectAll();
+        assertTrue(list.size() == 2);
     }
 
     @Test
-    public void deleteAll() {
+    public void selectTest() throws Exception {
+        boardDao.deleteAll();
+        assertTrue(boardDao.count()==0);
+
+        RecruitBoardDto boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+
+        Integer bno = boardDao.selectAll().get(0).getBno();
+        boardDto.setBno(bno);
+        RecruitBoardDto boardDto2 = boardDao.select(bno);
+        assertTrue(boardDto.equals(boardDto2));
     }
 
     @Test
-    public void selectPage() {
+    public void selectPageTest() throws Exception {
+        boardDao.deleteAll();
+
+        for (int i = 1; i <= 10; i++) {
+            RecruitBoardDto boardDto = new RecruitBoardDto(""+i, "no content"+i, "asdf");
+            boardDao.insert(boardDto);
+        }
+
+        Map map = new HashMap();
+        map.put("offset", 0);
+        map.put("pageSize", 3);
+
+        List<RecruitBoardDto> list = boardDao.selectPage(map);
+        assertTrue(list.get(0).getTitle().equals("10"));
+        assertTrue(list.get(1).getTitle().equals("9"));
+        assertTrue(list.get(2).getTitle().equals("8"));
+
+        map = new HashMap();
+        map.put("offset", 0);
+        map.put("pageSize", 1);
+
+        list = boardDao.selectPage(map);
+        assertTrue(list.get(0).getTitle().equals("10"));
+
+        map = new HashMap();
+        map.put("offset", 7);
+        map.put("pageSize", 3);
+
+        list = boardDao.selectPage(map);
+        assertTrue(list.get(0).getTitle().equals("3"));
+        assertTrue(list.get(1).getTitle().equals("2"));
+        assertTrue(list.get(2).getTitle().equals("1"));
     }
 
     @Test
-    public void increaseViewCnt() {
+    public void updateTest() throws Exception {
+        boardDao.deleteAll();
+        RecruitBoardDto boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+
+        Integer bno = boardDao.selectAll().get(0).getBno();
+        System.out.println("bno = " + bno);
+        boardDto.setBno(bno);
+        boardDto.setTitle("yes title");
+        assertTrue(boardDao.update(boardDto)==1);
+
+        RecruitBoardDto boardDto2 = boardDao.select(bno);
+        assertTrue(boardDto.equals(boardDto2));
     }
 
     @Test
-    public void updateCommentCnt() {
+    public void increaseViewCntTest() throws Exception {
+        boardDao.deleteAll();
+        assertTrue(boardDao.count()==0);
+
+        RecruitBoardDto boardDto = new RecruitBoardDto("no title", "no content", "asdf");
+        assertTrue(boardDao.insert(boardDto)==1);
+        assertTrue(boardDao.count()==1);
+
+        Integer bno = boardDao.selectAll().get(0).getBno();
+        assertTrue(boardDao.increaseViewCnt(bno)==1);
+
+        boardDto = boardDao.select(bno);
+        assertTrue(boardDto!=null);
+        assertTrue(boardDto.getView_cnt() == 1);
+
+        assertTrue(boardDao.increaseViewCnt(bno)==1);
+        boardDto = boardDao.select(bno);
+        assertTrue(boardDto!=null);
+        assertTrue(boardDto.getView_cnt() == 2);
     }
 }
