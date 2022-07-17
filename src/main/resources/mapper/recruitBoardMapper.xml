@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myportfolio.web.dao.RecruitBoardMapper">
+    <sql id="selectFromRecruitBoard">
+        SELECT bno, title, content, writer, view_cnt, comment_cnt, reg_date
+        FROM recruit_board
+    </sql>
+    <select id="count" resultType="int">
+        SELECT count(*) FROM recruit_board
+    </select>
+    <insert id="insert" parameterType="RecruitBoardDto">
+        INSERT INTO recruit_board (title, content, writer)
+        VALUES (#{title}, #{content}, #{writer})
+    </insert>
+    <select id="select" parameterType="int" resultType="RecruitBoardDto">
+        <include refid="selectFromRecruitBoard"/>
+        WHERE bno = #{bno}
+    </select>
+    <update id="update" parameterType="RecruitBoardDto">
+        UPDATE recruit_board
+        SET title = #{title}, content = #{content}, up_date = now()
+        WHERE bno = #{bno} and writer = #{writer}
+    </update>
+    <delete id="delete" parameterType="map">
+        DELETE FROM recruit_board
+        WHERE bno = #{bno} and writer = #{writer}
+    </delete>
+    <select id="selectAll" resultType="RecruitBoardDto">
+        <include refid="selectFromRecruitBoard"/>
+        ORDER BY reg_date DESC, bno DESC
+    </select>
+    <delete id="deleteAll">
+        DELETE FROM recruit_board
+    </delete>
+    <select id="selectPage" parameterType="map">
+        <include refid="selectFromRecruitBoard"/>
+        ORDER BY reg_date DESC, bno DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    <update id="increaseViewCnt" parameterType="int">
+        UPDATE recurit_board
+        SET view_cnt = view_cnt + 1
+        WHERE bno = #{bno}
+    </update>
+    <update id="updateCommentCnt" parameterType="map">
+        UPDATE recruit_board
+        SET comment_cnt = comment_cnt + #{cnt}
+        WHERE bno = #{bno}
+    </update>
+</mapper>

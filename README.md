@@ -14,3 +14,11 @@
 3. view-controller로 index.jsp 등록
 
 ### 회원가입, 로그인 기능 구현
+
+## 07.16
+### RegisterController에 UserValidator를 추가
+### ```<form:form>```태그로 view에 error_message를 보여주도록
+
+## 07.07
+- UserDao - JDBC로 추가 - MyBatis로 수정 예정
+- RecruitBoardDao - mapper생성 후 작성 및 테스트
