@@ -20,5 +20,9 @@
 ### ```<form:form>```태그로 view에 error_message를 보여주도록
 
 ## 07.07
+### User, RecruitBoard - DB, mapper, DAO 추가
 - UserDao - JDBC로 추가 - MyBatis로 수정 예정
 - RecruitBoardDao - mapper생성 후 작성 및 테스트
+### Paging 
+- PageHandler - domain에 추가
+- PageHandlerTest - PageHandler 테스트 - beginPage, endPage, showPrev, showNext
