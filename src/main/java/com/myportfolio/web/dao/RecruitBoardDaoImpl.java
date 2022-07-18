@@ -68,4 +68,12 @@ public class RecruitBoardDaoImpl implements RecruitBoardDao {
     public int searchResultCnt(SearchCondition sc) throws Exception {
         return session.selectOne(namespace + "searchResultCnt", sc);
     }
+
+    @Override
+    public int updateCommentCnt(Integer bno, Integer cnt) throws Exception {
+        Map map = new HashMap();
+        map.put("bno", bno);
+        map.put("cnt", cnt);
+        return session.update(namespace + "updateCommentCnt", map);
+    }
 }

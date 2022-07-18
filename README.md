@@ -19,7 +19,7 @@
 ### RegisterController에 UserValidator를 추가
 ### ```<form:form>```태그로 view에 error_message를 보여주도록
 
-## 07.07
+## 07.17
 ### User, RecruitBoard - DB, mapper, DAO 추가
 - UserDao - JDBC로 추가 - MyBatis로 수정 예정
 - RecruitBoardDao - mapper생성 후 작성 및 테스트
@@ -35,3 +35,6 @@
 : CRUD 기능 구현 
 ### 검색 기능 추가, css 수정
 - SearchCondition 추가 및 mapper.xml, PageHandler, DAO, Service, Controller 추가 및 수정
+
+## 07.18
+### 댓글 기능 구현 - DB table, mapper, DTO, DAO, Service 작성

@@ -31,4 +31,5 @@ public interface RecruitBoardDao {
 
     int searchResultCnt(SearchCondition sc) throws Exception;
 
-    }
+    int updateCommentCnt(Integer bno, Integer cnt) throws Exception;
+}

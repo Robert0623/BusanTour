@@ -51,11 +51,6 @@
         SET view_cnt = view_cnt + 1
         WHERE bno = #{bno}
     </update>
-    <update id="updateCommentCnt" parameterType="map">
-        UPDATE recruit_board
-        SET comment_cnt = comment_cnt + #{cnt}
-        WHERE bno = #{bno}
-    </update>
 
     <sql id="searchCondition">
         <choose>
@@ -85,4 +80,9 @@
         WHERE true
         <include refid="searchCondition"/>
     </select>
+    <update id="updateCommentCnt" parameterType="map">
+        UPDATE recruit_board
+        SET comment_cnt = comment_cnt + #{cnt}
+        WHERE bno = #{bno}
+    </update>
 </mapper>
